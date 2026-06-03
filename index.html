@@ -389,11 +389,17 @@ const WHATS_LOJA = {
 // estado do quiz
 const Q = {conta:'', casa:'', cidade:'', loja:'', whats:'', lojaNome:''};
 
-// faixas de conta -> base estimada p/ cálculo + sistema sugerido
+// === Parâmetros de cálculo (Minas Gerais) ===
+const TARIFA_KWH      = 1.14;  // R$/kWh — tarifa média em Minas (ajuste aqui se mudar)
+const GERACAO_KWP_MES = 125;   // kWh gerados por kWp/mês na região (Uberlândia/Catalão)
+const POT_PLACA_KW    = 0.57;  // potência por placa (~570 Wp) p/ estimar nº de placas
+const FATOR_ECONOMIA  = 0.90;  // % da conta que vira economia (resta o custo de disponibilidade)
+
+// faixas de conta -> base estimada p/ cálculo + nome do sistema sugerido
 const FAIXA = {
-  '300':{base:300, sistema:'Kit Solar Residencial Compacto', sub:'~2,2 kWp · 4 a 6 placas — ideal pra contas até R$ 300'},
-  '600':{base:600, sistema:'Sistema Solar Residencial', sub:'~4,4 kWp · 8 a 10 placas — ideal pra contas em torno de R$ 600'},
-  '900':{base:1100,sistema:'Sistema Solar de Alta Performance', sub:'7+ kWp · 12+ placas — ideal pra contas acima de R$ 900'}
+  '300':{base:300, sistema:'Kit Solar Residencial Compacto',    faixaTxt:'ideal pra contas até R$ 300'},
+  '600':{base:600, sistema:'Sistema Solar Residencial',         faixaTxt:'ideal pra contas em torno de R$ 600'},
+  '900':{base:1100,sistema:'Sistema Solar de Alta Performance', faixaTxt:'ideal pra contas acima de R$ 900'}
 };
 
 // ---- UTM & TRACKING ----
@@ -481,14 +487,22 @@ function cityChange(){
 function verResultado(){
   if(!Q.cidade){document.getElementById('cidade-err').classList.add('show');return;}
   const f=FAIXA[Q.conta]||FAIXA['600'];
-  const ecoAno=Math.round(f.base*0.90*12);
+  // consumo real a partir da tarifa de MG (R$ 1,14/kWh) -> dimensiona o sistema
+  const consumoExato=f.base/TARIFA_KWH;                 // kWh/mês
+  const consumoKwh=Math.round(consumoExato);
+  const kWp=consumoExato/GERACAO_KWP_MES;               // potência necessária
+  const nPlacas=Math.ceil(kWp/POT_PLACA_KW);
+  const kWpTxt=kWp.toFixed(1).replace('.',',');
+  // economia: consumo (kWh) × tarifa × 90% (resta o custo de disponibilidade)
+  const ecoAno=Math.round(consumoExato*TARIFA_KWH*FATOR_ECONOMIA*12);
   const ecoCopa=ecoAno*4; // 4 anos = 1 Copa
   Q.sistema=f.sistema; Q.ecoCopa=ecoCopa; Q.ecoAno=ecoAno;
+  Q.kWp=kWpTxt; Q.placas=nPlacas; Q.consumoKwh=consumoKwh;
   // texto do sistema (ajusta se imóvel não é próprio)
-  let sysNome=f.sistema, sysSub=f.sub;
+  let sysNome=f.sistema, sysSub='~'+kWpTxt+' kWp · '+nPlacas+' placas · ~'+consumoKwh+' kWh/mês — '+f.faixaTxt;
   if(Q.casa==='Não / Alugada'){
     sysNome='Locação de Energia / Usina por Assinatura';
-    sysSub='Economize sem instalar nada no telhado — perfeito pra imóvel alugado. Equivalente a um '+f.sistema.toLowerCase()+'.';
+    sysSub='Economize sem instalar nada no telhado — perfeito pra imóvel alugado. Equivalente a um '+f.sistema.toLowerCase()+' (~'+kWpTxt+' kWp).';
   }
   document.getElementById('r-sistema').textContent=sysNome;
   document.getElementById('r-sistema-sub').textContent=sysSub;
@@ -515,13 +529,14 @@ async function enviarLead(e){
   document.getElementById('btn-lead-spin').style.display='inline-block';
 
   const ip=await getIP();const utms=mergeUTMs();
-  const resumo=`Quiz Copa | Conta: R$${Q.conta==='900'?'900+':Q.conta}/mês | Casa própria: ${Q.casa} | Cidade: ${Q.cidade} | Loja: ${Q.lojaNome} | Sistema ideal: ${Q.sistemaNome} | Economia/Copa: R$ ${Q.ecoCopa.toLocaleString('pt-BR')}`;
+  const resumo=`Quiz Copa | Conta: R$${Q.conta==='900'?'900+':Q.conta}/mês | Consumo: ~${Q.consumoKwh} kWh/mês | Casa própria: ${Q.casa} | Cidade: ${Q.cidade} | Loja: ${Q.lojaNome} | Sistema ideal: ${Q.sistemaNome} (~${Q.kWp} kWp · ${Q.placas} placas) | Economia/Copa: R$ ${Q.ecoCopa.toLocaleString('pt-BR')}`;
   const payload={
     form_type:'quiz_solar', pagina:PAGINA,
     nome, telefone:tel, cidade:Q.cidade,
     conta_mensal:(Q.conta==='900'?'900+':Q.conta),
     casa_propria:Q.casa, loja:Q.lojaNome,
-    sistema_ideal:Q.sistemaNome, economia_4anos:'R$ '+Q.ecoCopa.toLocaleString('pt-BR'),
+    sistema_ideal:Q.sistemaNome, potencia_kwp:Q.kWp+' kWp', placas:String(Q.placas), consumo_kwh:String(Q.consumoKwh),
+    economia_4anos:'R$ '+Q.ecoCopa.toLocaleString('pt-BR'),
     mensagem:resumo, ip,
     ...utms, timestamp:new Date().toISOString()
   };
@@ -533,6 +548,7 @@ async function enviarLead(e){
   try{localStorage.setItem('romasol_quiz',JSON.stringify({
     nome, telefone:tel, cidade:Q.cidade, loja:Q.loja, lojaNome:Q.lojaNome, whats:Q.whats,
     conta:Q.conta, casa:Q.casa, sistema:Q.sistemaNome,
+    kWp:Q.kWp, placas:Q.placas, consumoKwh:Q.consumoKwh,
     ecoCopa:Q.ecoCopa, ecoAno:Q.ecoAno
   }));}catch(e){}
 

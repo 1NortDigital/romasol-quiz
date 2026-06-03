@@ -119,8 +119,9 @@ const lojaNome=d.lojaNome||WHATS_LOJA[loja].nome;
 if(d.nome) document.getElementById('saudacao').innerHTML='Tudo certo, <b>'+d.nome.split(' ')[0]+'</b>! Veja o sistema ideal pro seu perfil 👇';
 if(d.sistema) document.getElementById('r-sistema').textContent=d.sistema;
 if(d.sistema){
-  const subs={'Locação de Energia / Usina por Assinatura':'Economize sem instalar nada no telhado — ideal pra imóvel alugado.'};
-  document.getElementById('r-sistema-sub').textContent=subs[d.sistema]||'Dimensionado pro seu consumo e sua cidade.';
+  const dim=(d.kWp?('~'+d.kWp+' kWp'+(d.placas?(' · '+d.placas+' placas'):'')+(d.consumoKwh?(' · ~'+d.consumoKwh+' kWh/mês'):'')):'');
+  const subs={'Locação de Energia / Usina por Assinatura':'Economize sem instalar nada no telhado — ideal pra imóvel alugado.'+(dim?(' Equivale a '+dim+'.'):'')};
+  document.getElementById('r-sistema-sub').textContent=subs[d.sistema]||(dim?(dim+' — dimensionado pro seu consumo.'):'Dimensionado pro seu consumo e sua cidade.');
 }
 if(typeof d.ecoCopa==='number'){document.getElementById('r-eco').textContent='R$ '+d.ecoCopa.toLocaleString('pt-BR');}
 if(typeof d.ecoAno==='number'){document.getElementById('r-eco-ano').textContent='R$ '+d.ecoAno.toLocaleString('pt-BR');}
@@ -132,7 +133,8 @@ const msg=encodeURIComponent(
   (d.cidade?('*Cidade:* '+d.cidade+'\n'):'')+
   (d.conta?('*Conta de luz:* R$ '+(d.conta==='900'?'900+':d.conta)+'/mês\n'):'')+
   (d.casa?('*Casa própria:* '+d.casa+'\n'):'')+
-  (d.sistema?('*Sistema ideal:* '+d.sistema+'\n'):'')+
+  (d.sistema?('*Sistema ideal:* '+d.sistema+(d.kWp?(' (~'+d.kWp+' kWp'+(d.placas?(' · '+d.placas+' placas'):'')+')'):'')+'\n'):'')+
+  (d.consumoKwh?('*Consumo estimado:* ~'+d.consumoKwh+' kWh/mês\n'):'')+
   (typeof d.ecoCopa==='number'?('*Economia por Copa (4 anos):* R$ '+d.ecoCopa.toLocaleString('pt-BR')):'')
 );
 document.getElementById('wpp').href='https://wa.me/'+whats+'?text='+msg;
