@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz da Copa da Economia | Romasol Energia Solar</title>
+<meta name="description" content="Descubra em 1 minuto quanto você economiza de energia a cada Copa do Mundo (4 anos) com energia solar da Romasol. Uberlândia/MG e Catalão/GO e região.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://romasolengenharia.com.br/quiz/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Quiz da Copa da Economia — Romasol Solar">
+<meta property="og:description" content="Responda 3 perguntas e descubra quanto você economiza a cada Copa do Mundo com energia solar.">
+<meta property="og:image" content="assets/logo-romasol-horizontal.png">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='30' fill='%230B6E3B'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23E9CE10' stroke-width='5'/%3E%3Cpath d='M50 30 L58 44 L74 44 L61 54 L66 70 L50 60 L34 70 L39 54 L26 44 L42 44 Z' fill='%23E9CE10'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+.material-icons{font-size:1em;vertical-align:-0.14em;line-height:1;display:inline-block}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{max-width:100%;overflow-x:hidden}
+img{max-width:100%;height:auto}
+:root{
+  /* === Tema Copa — Verde & Dourado === */
+  --grass:#0B6E3B;         /* verde gramado */
+  --grass-mid:#0A5C32;
+  --grass-dark:#063D21;
+  --grass-deep:#04210F;    /* fundo escuro */
+  --grass-line:rgba(255,255,255,.07);
+  --gold:#E9CE10;          /* dourado da taça (cor da marca Romasol) */
+  --gold-dark:#C9B00A;
+  --gold-light:#FFE74A;
+  --gold-glow:rgba(233,206,16,.4);
+  --white:#fdfffc;
+  --ink:#04210F;
+  --gray-100:#EFF4F0;
+  --gray-300:#CBD7CE;
+  --gray-500:#6B7E70;
+  --ok:#25D366;
+  --r:16px;--r-lg:24px;--r-pill:60px;--t:.25s ease;
+}
+body{
+  font-family:'Montserrat',sans-serif;color:var(--white);line-height:1.6;font-weight:500;min-height:100vh;
+  background:
+    radial-gradient(1100px 520px at 50% -10%,rgba(233,206,16,.16),transparent 60%),
+    repeating-linear-gradient(90deg,transparent 0 78px,var(--grass-line) 78px 79px),
+    linear-gradient(165deg,var(--grass) 0%,var(--grass-mid) 38%,var(--grass-dark) 72%,var(--grass-deep) 100%);
+  background-attachment:fixed;
+  display:flex;flex-direction:column;align-items:center;
+  padding:22px 16px 40px;
+}
+/* linha central do campo decorativa */
+body::before{content:'';position:fixed;top:50%;left:0;right:0;height:2px;background:var(--grass-line);z-index:0;pointer-events:none}
+body::after{content:'';position:fixed;top:50%;left:50%;width:200px;height:200px;border:2px solid var(--grass-line);border-radius:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none}
+
+.wrap{width:100%;max-width:620px;position:relative;z-index:2}
+
+/* BRAND */
+.brand{display:flex;justify-content:center;margin-bottom:18px}
+.brand img{height:46px;width:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+
+/* PROGRESS */
+.progress{display:none;margin-bottom:16px}
+.progress.show{display:block}
+.progress-top{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;letter-spacing:.5px;color:var(--gold-light);text-transform:uppercase;margin-bottom:8px}
+.progress-bar{height:9px;background:rgba(255,255,255,.14);border-radius:60px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:60px;transition:width .45s cubic-bezier(.4,0,.2,1);box-shadow:0 0 14px var(--gold-glow)}
+
+/* CARD */
+.card{background:rgba(4,33,15,.78);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:38px 30px;box-shadow:0 24px 70px rgba(0,0,0,.45);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+@media(max-width:520px){.card{padding:30px 20px}}
+
+/* SCREENS */
+.screen{display:none;animation:fadein .4s ease}
+.screen.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* INTRO */
+.cup-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(233,206,16,.16);border:1px solid rgba(233,206,16,.45);border-radius:60px;padding:7px 18px;font-size:12px;font-weight:800;letter-spacing:1.4px;color:var(--gold-light);text-transform:uppercase;margin-bottom:20px}
+.cup-badge .pulse{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--gold-glow)}70%{box-shadow:0 0 0 9px rgba(233,206,16,0)}100%{box-shadow:0 0 0 0 rgba(233,206,16,0)}}
+.trophy{font-size:62px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 16px rgba(233,206,16,.5))}
+h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(30px,7vw,50px);line-height:1.02;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px}
+h1 .hl{color:var(--gold)}
+.intro-sub{font-size:16.5px;color:rgba(255,255,255,.86);margin-bottom:14px;font-weight:500}
+.intro-sub strong{color:var(--gold-light)}
+.intro-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin:18px 0 26px;text-align:left;max-width:380px;margin-left:auto;margin-right:auto}
+.intro-feats li{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:600;color:rgba(255,255,255,.9)}
+.intro-feats .material-icons{color:var(--gold);font-size:21px}
+.intro-center{text-align:center}
+
+/* QUESTION */
+.q-num{font-size:13px;font-weight:800;letter-spacing:1px;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+.q-title{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(23px,5.2vw,32px);line-height:1.1;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.q-help{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:24px;font-weight:500}
+
+/* OPTION BUTTONS */
+.opts{display:flex;flex-direction:column;gap:13px}
+.opt{display:flex;align-items:center;gap:15px;width:100%;text-align:left;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.16);border-radius:var(--r);padding:18px 20px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;transition:all var(--t)}
+.opt:hover{border-color:var(--gold);background:rgba(233,206,16,.12);transform:translateY(-2px)}
+.opt.selected{border-color:var(--gold);background:rgba(233,206,16,.18);box-shadow:0 0 0 4px var(--gold-glow)}
+.opt-ic{width:46px;height:46px;border-radius:12px;background:rgba(233,206,16,.18);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gold-light);flex-shrink:0}
+.opt-txt{flex:1}
+.opt-txt small{display:block;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.6);margin-top:2px}
+.opt .check{margin-left:auto;color:var(--gold);font-size:22px;opacity:0;transition:opacity var(--t)}
+.opt.selected .check{opacity:1}
+
+/* SELECT (cidade) */
+.sel-wrap{position:relative}
+.sel-wrap .material-icons.pin{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:22px;pointer-events:none}
+select.city{width:100%;padding:18px 18px 18px 48px;background:rgba(255,255,255,.95);border:2px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:16px;font-weight:600;cursor:pointer;appearance:none}
+select.city:focus{outline:none;border-color:var(--gold)}
+.sel-wrap .material-icons.arr{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--grass);font-size:24px;pointer-events:none}
+select.city optgroup{font-weight:800;color:var(--grass-dark)}
+select.city option{font-weight:500;color:var(--ink)}
+
+/* INPUTS (lead) */
+.fg{margin-bottom:14px;text-align:left}
+.fg label{display:block;font-size:13px;font-weight:700;color:var(--gold-light);margin-bottom:7px;letter-spacing:.3px}
+.fg input{width:100%;padding:16px 18px;background:rgba(255,255,255,.95);border:2px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:16px;font-weight:600;transition:border-color var(--t)}
+.fg input:focus{outline:none;border-color:var(--gold)}
+.fg input::placeholder{color:#9aa6a0}
+.err{font-size:12.5px;color:#FF6B6B;margin-top:5px;display:none;font-weight:600}
+.err.show{display:block}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;font-family:'Anton',sans-serif;font-weight:400;font-size:19px;letter-spacing:1px;text-transform:uppercase;padding:18px 26px;border-radius:var(--r-pill);border:none;cursor:pointer;transition:all var(--t);text-decoration:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--grass-deep);box-shadow:0 10px 30px var(--gold-glow)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(233,206,16,.6)}
+.btn-gold:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.7);border:none;font-family:'Montserrat';font-size:14px;font-weight:700;text-transform:none;letter-spacing:0;padding:12px;width:auto;cursor:pointer}
+.btn-ghost:hover{color:var(--gold-light)}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px}
+.nav-row .btn-gold{width:auto;padding:16px 34px}
+.spinner{width:20px;height:20px;border:2.5px solid rgba(4,33,15,.3);border-top-color:var(--grass-deep);border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* RESULT */
+.res-head{text-align:center;margin-bottom:22px}
+.res-sys{background:rgba(233,206,16,.1);border:1px solid rgba(233,206,16,.35);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;gap:14px;margin-bottom:18px;text-align:left}
+.res-sys .material-icons{font-size:34px;color:var(--gold)}
+.res-sys b{display:block;font-size:17px;color:var(--gold-light);font-family:'Anton';font-weight:400;letter-spacing:.3px}
+.res-sys span{font-size:13px;color:rgba(255,255,255,.72);font-weight:500}
+.res-eco{text-align:center;background:linear-gradient(135deg,rgba(11,110,59,.5),rgba(4,33,15,.5));border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:26px 18px;margin-bottom:8px;position:relative}
+.res-eco .lbl{font-size:13px;font-weight:700;letter-spacing:.6px;color:rgba(255,255,255,.78);text-transform:uppercase}
+.res-eco .big{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(40px,11vw,68px);line-height:1;color:var(--gold);margin:6px 0;text-shadow:0 4px 20px var(--gold-glow)}
+.res-eco .cup{font-size:14px;color:var(--gold-light);font-weight:700}
+.lock-note{font-size:12.5px;color:rgba(255,255,255,.6);text-align:center;margin:14px 0 4px}
+.blur{filter:blur(7px);user-select:none;pointer-events:none}
+
+/* LEAD GATE */
+.gate-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(233,206,16,.16);border:1px solid rgba(233,206,16,.4);color:var(--gold-light);font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:6px 14px;border-radius:60px;margin-bottom:14px}
+.priv{font-size:11.5px;color:rgba(255,255,255,.5);text-align:center;margin-top:12px}
+.priv .material-icons{font-size:14px;vertical-align:-.18em}
+
+/* SUCCESS */
+.success{text-align:center;padding:14px 0}
+.success .ring{width:90px;height:90px;border-radius:50%;background:rgba(37,211,102,.15);border:2px solid var(--ok);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:pop .4s ease}
+.success .ring .material-icons{font-size:52px;color:var(--ok)}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.success h2{font-family:'Anton';font-weight:400;font-size:30px;text-transform:uppercase;letter-spacing:.5px;color:var(--ok);margin-bottom:8px}
+.success p{color:rgba(255,255,255,.8);font-size:15px}
+
+/* FOOTER */
+.foot{text-align:center;margin-top:20px;font-size:12px;color:rgba(255,255,255,.5)}
+.foot a{color:var(--gold-light);text-decoration:none}
+.disc{font-size:11px;color:rgba(255,255,255,.42);text-align:center;margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand"><img src="assets/logo-romasol-horizontal.png" alt="Romasol Energia Solar"></div>
+
+  <!-- PROGRESS -->
+  <div class="progress" id="progress">
+    <div class="progress-top"><span id="prog-label">Pergunta 1 de 3</span><span id="prog-pct">33%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+
+  <div class="card">
+
+    <!-- ===== TELA 0 — INTRO ===== -->
+    <section class="screen active intro-center" id="s-intro">
+      <span class="cup-badge"><span class="pulse"></span>Copa da Economia · Energia Solar</span>
+      <div class="trophy">🏆</div>
+      <h1>Descubra quanto você economiza <span class="hl">a cada Copa do Mundo</span></h1>
+      <p class="intro-sub">Responda <strong>3 perguntas rápidas</strong> e veja quanto a energia solar coloca no seu bolso a cada <strong>4 anos</strong> — uma Copa inteira de economia.</p>
+      <ul class="intro-feats">
+        <li><span class="material-icons">timer</span> Leva menos de 1 minuto</li>
+        <li><span class="material-icons">bolt</span> Resultado personalizado pro seu consumo</li>
+        <li><span class="material-icons">verified</span> Atende Uberlândia/MG, Catalão/GO e região</li>
+      </ul>
+      <button class="btn btn-gold" onclick="goQuiz()">⚽ Iniciar o Quiz</button>
+      <p class="disc">Romasol Energia Solar · 100% gratuito e sem compromisso</p>
+    </section>
+
+    <!-- ===== P1 — CONTA DE LUZ ===== -->
+    <section class="screen" id="s-q1">
+      <div class="q-num">Pergunta 1 de 3</div>
+      <h2 class="q-title">Sua conta de luz é de:</h2>
+      <p class="q-help">Selecione a faixa mais próxima da sua média mensal.</p>
+      <div class="opts">
+        <button class="opt" data-q="conta" data-val="300" onclick="pick(this)">
+          <span class="opt-ic"><span class="material-icons">lightbulb</span></span>
+          <span class="opt-txt">R$ 300 / mês<small>Conta menor — casa compacta</small></span>
+          <span class="check material-icons">check_circle</span>
+        </button>
+        <button class="opt" data-q="conta" data-val="600" onclick="pick(this)">
+          <span class="opt-ic"><span class="material-icons">flash_on</span></span>
+          <span class="opt-txt">R$ 600 / mês<small>Conta média — família</small></span>
+          <span class="check material-icons">check_circle</span>
+        </button>
+        <button class="opt" data-q="conta" data-val="900" onclick="pick(this)">
+          <span class="opt-ic"><span class="material-icons">electric_bolt</span></span>
+          <span class="opt-txt">+R$ 900 / mês<small>Conta alta — alto consumo / comércio</small></span>
+          <span class="check material-icons">check_circle</span>
+        </button>
+      </div>
+      <div class="nav-row">
+        <button class="btn-ghost" onclick="back('s-intro',0)"><span class="material-icons" style="font-size:16px;vertical-align:-.2em">arrow_back</span> Voltar</button>
+      </div>
+    </section>
+
+    <!-- ===== P2 — CASA PRÓPRIA ===== -->
+    <section class="screen" id="s-q2">
+      <div class="q-num">Pergunta 2 de 3</div>
+      <h2 class="q-title">Você tem casa própria?</h2>
+      <p class="q-help">Isso define a melhor solução pra você.</p>
+      <div class="opts">
+        <button class="opt" data-q="casa" data-val="Sim" onclick="pick(this)">
+          <span class="opt-ic"><span class="material-icons">home</span></span>
+          <span class="opt-txt">Sim, é minha<small>Posso instalar no meu telhado</small></span>
+          <span class="check material-icons">check_circle</span>
+        </button>
+        <button class="opt" data-q="casa" data-val="Não / Alugada" onclick="pick(this)">
+          <span class="opt-ic"><span class="material-icons">key</span></span>
+          <span class="opt-txt">Não / é alugada<small>Quero economizar mesmo assim</small></span>
+          <span class="check material-icons">check_circle</span>
+        </button>
+      </div>
+      <div class="nav-row">
+        <button class="btn-ghost" onclick="back('s-q1',1)"><span class="material-icons" style="font-size:16px;vertical-align:-.2em">arrow_back</span> Voltar</button>
+      </div>
+    </section>
+
+    <!-- ===== P3 — CIDADE (roteia WhatsApp) ===== -->
+    <section class="screen" id="s-q3">
+      <div class="q-num">Pergunta 3 de 3</div>
+      <h2 class="q-title">Qual a sua cidade?</h2>
+      <p class="q-help">Atendemos sua cidade e região (até ~80km de cada loja).</p>
+      <div class="sel-wrap">
+        <span class="material-icons pin">location_on</span>
+        <select class="city" id="cidade" onchange="cityChange()">
+          <option value="">Selecione sua cidade...</option>
+          <optgroup label="Uberlândia e região (MG)">
+            <option data-loja="uberlandia">Uberlândia</option>
+            <option data-loja="uberlandia">Araguari</option>
+            <option data-loja="uberlandia">Indianópolis</option>
+            <option data-loja="uberlandia">Tupaciguara</option>
+            <option data-loja="uberlandia">Monte Alegre de Minas</option>
+            <option data-loja="uberlandia">Prata</option>
+            <option data-loja="uberlandia">Araporã</option>
+            <option data-loja="uberlandia">Centralina</option>
+            <option data-loja="uberlandia">Canápolis</option>
+            <option data-loja="uberlandia">Capinópolis</option>
+            <option data-loja="uberlandia">Cascalho Rico</option>
+            <option data-loja="uberlandia">Estrela do Sul</option>
+            <option data-loja="uberlandia">Romaria</option>
+            <option data-loja="uberlandia">Nova Ponte</option>
+            <option data-loja="uberlandia">Veríssimo</option>
+            <option data-loja="uberlandia">Outra cidade perto de Uberlândia</option>
+          </optgroup>
+          <optgroup label="Catalão e região (GO)">
+            <option data-loja="catalao">Catalão</option>
+            <option data-loja="catalao">Ouvidor</option>
+            <option data-loja="catalao">Goiandira</option>
+            <option data-loja="catalao">Três Ranchos</option>
+            <option data-loja="catalao">Nova Aurora</option>
+            <option data-loja="catalao">Cumari</option>
+            <option data-loja="catalao">Anhanguera</option>
+            <option data-loja="catalao">Davinópolis</option>
+            <option data-loja="catalao">Campo Alegre de Goiás</option>
+            <option data-loja="catalao">Corumbaíba</option>
+            <option data-loja="catalao">Ipameri</option>
+            <option data-loja="catalao">Outra cidade perto de Catalão</option>
+          </optgroup>
+        </select>
+        <span class="material-icons arr">expand_more</span>
+      </div>
+      <div class="err" id="cidade-err">Selecione sua cidade pra continuar.</div>
+      <div class="nav-row">
+        <button class="btn-ghost" onclick="back('s-q2',2)"><span class="material-icons" style="font-size:16px;vertical-align:-.2em">arrow_back</span> Voltar</button>
+        <button class="btn btn-gold" onclick="verResultado()">Ver resultado <span class="material-icons" style="font-size:20px">arrow_forward</span></button>
+      </div>
+    </section>
+
+    <!-- ===== RESULTADO + CAPTURA ===== -->
+    <section class="screen" id="s-result">
+      <div class="res-head">
+        <span class="gate-tag"><span class="material-icons" style="font-size:14px">emoji_events</span> Seu resultado</span>
+        <h2 class="q-title" style="font-size:clamp(22px,5vw,30px)">O sistema ideal pro seu perfil</h2>
+      </div>
+
+      <div class="res-sys">
+        <span class="material-icons">solar_power</span>
+        <div><b id="r-sistema">—</b><span id="r-sistema-sub">—</span></div>
+      </div>
+
+      <div class="res-eco">
+        <div class="lbl">Você economiza por Copa do Mundo</div>
+        <div class="big"><span id="r-eco" class="blur">R$ 00.000</span></div>
+        <div class="cup">⚽ a cada 4 anos · <span id="r-eco-ano" class="blur">R$ 0.000</span>/ano</div>
+      </div>
+
+      <p class="lock-note"><span class="material-icons" style="font-size:15px;vertical-align:-.2em">lock</span> Preencha abaixo pra <b>liberar seu resultado</b> e receber no WhatsApp 👇</p>
+
+      <form id="leadForm" onsubmit="enviarLead(event)" style="margin-top:18px">
+        <div class="fg">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" placeholder="Como podemos te chamar?" required autocomplete="name">
+        </div>
+        <div class="fg">
+          <label for="tel">Seu WhatsApp</label>
+          <input type="tel" id="tel" placeholder="(34) 9 0000-0000" required inputmode="tel" autocomplete="tel">
+          <div class="err" id="tel-err">Informe um WhatsApp válido com DDD.</div>
+        </div>
+        <button type="submit" class="btn btn-gold" id="btn-lead">
+          <span id="btn-lead-txt">🏆 Liberar minha economia</span>
+          <span class="spinner" id="btn-lead-spin"></span>
+        </button>
+        <p class="priv"><span class="material-icons">lock</span> Seus dados estão seguros. Sem spam.</p>
+      </form>
+    </section>
+
+    <!-- ===== SUCESSO ===== -->
+    <section class="screen" id="s-success">
+      <div class="success">
+        <div class="ring"><span class="material-icons">check</span></div>
+        <h2>Lead capturado! ✅</h2>
+        <p>Tudo certo, <b id="suc-nome">!</b> Estamos preparando seu resultado completo…</p>
+        <p style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.6)">Redirecionando pra sua página de resultado…</p>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="foot">⚡ Romasol Energia Solar · Uberlândia/MG · Catalão/GO &nbsp;|&nbsp; <a href="#" onclick="location.reload();return false;">Refazer o quiz</a></p>
+</div>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+window.dataLayer = window.dataLayer || [];
+
+// ====================================================================
+// CONFIG Romasol — QUIZ (mesma planilha da LP; origem identificada por pagina/form_type)
+// ====================================================================
+const WEBHOOK = 'https://webhooks.matheusscherrer.com.br/webhook/landing-page'; // n8n da agência
+const SHEET_BACKUP = 'https://script.google.com/macros/s/AKfycbzcHRqmBPyLqDXk2l1vkswm5O4frfZBHg22XdSJRSNPg1TBuMQgGyV9wxb19qaolFaIQA/exec'; // Apps Script da planilha Romasol (mesma da LP)
+const PAGINA = 'quiz-romasol';            // identifica a ORIGEM como quiz (roteia/filtra no n8n e na planilha)
+const CLICKUP_CLIENT_ID = '86afrbvmj';    // ID Romasol no ClickUp (vai em todo lead)
+const REDIRECT_OBRIGADO = 'obrigado.html';// página de obrigado
+// WhatsApp por loja (roteado pela cidade — raio ~80km)
+const WHATS_LOJA = {
+  uberlandia:{numero:'553497783777', nome:'Romasol Uberlândia (MG)'},
+  catalao:   {numero:'556499966909', nome:'Romasol Catalão (GO)'}
+};
+
+// estado do quiz
+const Q = {conta:'', casa:'', cidade:'', loja:'', whats:'', lojaNome:''};
+
+// faixas de conta -> base estimada p/ cálculo + sistema sugerido
+const FAIXA = {
+  '300':{base:300, sistema:'Kit Solar Residencial Compacto', sub:'~2,2 kWp · 4 a 6 placas — ideal pra contas até R$ 300'},
+  '600':{base:600, sistema:'Sistema Solar Residencial', sub:'~4,4 kWp · 8 a 10 placas — ideal pra contas em torno de R$ 600'},
+  '900':{base:1100,sistema:'Sistema Solar de Alta Performance', sub:'7+ kWp · 12+ placas — ideal pra contas acima de R$ 900'}
+};
+
+// ---- UTM & TRACKING ----
+function getUTMs(){
+  const p=new URLSearchParams(window.location.search);
+  return {
+    utm_source:p.get('utm_source')||'',utm_medium:p.get('utm_medium')||'',
+    utm_campaign:p.get('utm_campaign')||'',utm_content:p.get('utm_content')||'',
+    utm_term:p.get('utm_term')||p.get('utm_keyword')||'',
+    gclid:p.get('gclid')||'',fbclid:p.get('fbclid')||'',
+    page_url:window.location.href.split('#')[0],page_referer:document.referrer||''
+  };
+}
+function setCookie(k,v,days=30){const exp=new Date(Date.now()+days*864e5).toUTCString();document.cookie=`${k}=${encodeURIComponent(v)};expires=${exp};path=/;SameSite=Lax`;}
+function getCookie(k){const m=document.cookie.match(new RegExp('(?:^|; )'+k+'=([^;]*)'));return m?decodeURIComponent(m[1]):'';}
+function saveUTMsCookies(){const u=getUTMs();for(const[k,v]of Object.entries(u)) if(v) setCookie('rmq_'+k,v);if(!getCookie('rmq_landing_url'))setCookie('rmq_landing_url',u.page_url);return u;}
+function mergeUTMs(){
+  const url=getUTMs();const merged={};
+  const keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'];
+  for(const k of keys) merged[k]=url[k]||(getCookie('rmq_'+k)||'');
+  merged.page_url=url.page_url;merged.page_referer=url.page_referer;merged.landing_url=getCookie('rmq_landing_url')||url.page_url;return merged;
+}
+async function getIP(){try{const r=await fetch('https://api.ipify.org?format=json',{cache:'no-cache'});const d=await r.json();return d.ip||'';}catch{return '';}}
+saveUTMsCookies();
+
+// ---- WEBHOOK + PLANILHA ----
+async function sendWebhook(payload){
+  if(CLICKUP_CLIENT_ID) payload.clickup_client_id=CLICKUP_CLIENT_ID;
+  if(SHEET_BACKUP){
+    try{fetch(SHEET_BACKUP,{method:'POST',mode:'no-cors',keepalive:true,body:JSON.stringify(payload)});}
+    catch(e){console.warn('[Romasol Quiz] Planilha backup falhou:',e);}
+  }
+  if(!WEBHOOK) return false;
+  const opts={method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)};
+  try{const res=await fetch(WEBHOOK,opts);if(!res.ok) console.warn('[Romasol Quiz] Webhook status:',res.status);return true;}
+  catch(err){try{await fetch(WEBHOOK,{...opts,keepalive:true});}catch(e2){console.warn('[Romasol Quiz] Webhook falhou:',e2);}return false;}
+}
+
+// ---- PHONE MASK ----
+function applyPhoneMask(el){
+  el.addEventListener('input',function(){
+    let v=this.value.replace(/\D/g,'').slice(0,11);
+    if(v.length<=10) v=v.replace(/^(\d{2})(\d{4})(\d{0,4})$/,'($1) $2-$3');
+    else v=v.replace(/^(\d{2})(\d{5})(\d{0,4})$/,'($1) $2-$3');
+    this.value=v;
+  });
+}
+function validPhone(p){return p.replace(/\D/g,'').length>=10}
+
+// ---- NAVEGAÇÃO ENTRE TELAS ----
+let stepAtual=0; // 0 intro, 1..3 perguntas
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function setProgress(step){
+  const prog=document.getElementById('progress');
+  if(step>=1&&step<=3){prog.classList.add('show');const pct=Math.round(step/3*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-label').textContent='Pergunta '+step+' de 3';document.getElementById('prog-pct').textContent=pct+'%';}
+  else prog.classList.remove('show');
+  stepAtual=step;
+}
+function goQuiz(){showScreen('s-q1');setProgress(1);}
+function back(id,step){showScreen(id);setProgress(step);}
+
+// ---- SELEÇÃO DE OPÇÃO (avança sozinho) ----
+function pick(btn){
+  const q=btn.dataset.q,val=btn.dataset.val;
+  Q[q]=val;
+  btn.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(()=>{
+    if(q==='conta'){showScreen('s-q2');setProgress(2);}
+    else if(q==='casa'){showScreen('s-q3');setProgress(3);}
+  },260);
+}
+
+// ---- CIDADE -> LOJA / WHATSAPP ----
+function cityChange(){
+  const sel=document.getElementById('cidade');
+  const opt=sel.options[sel.selectedIndex];
+  Q.cidade=sel.value;
+  const loja=opt?opt.dataset.loja:'';
+  if(loja&&WHATS_LOJA[loja]){Q.loja=loja;Q.whats=WHATS_LOJA[loja].numero;Q.lojaNome=WHATS_LOJA[loja].nome;}
+  document.getElementById('cidade-err').classList.remove('show');
+}
+
+// ---- RESULTADO ----
+function verResultado(){
+  if(!Q.cidade){document.getElementById('cidade-err').classList.add('show');return;}
+  const f=FAIXA[Q.conta]||FAIXA['600'];
+  const ecoAno=Math.round(f.base*0.90*12);
+  const ecoCopa=ecoAno*4; // 4 anos = 1 Copa
+  Q.sistema=f.sistema; Q.ecoCopa=ecoCopa; Q.ecoAno=ecoAno;
+  // texto do sistema (ajusta se imóvel não é próprio)
+  let sysNome=f.sistema, sysSub=f.sub;
+  if(Q.casa==='Não / Alugada'){
+    sysNome='Locação de Energia / Usina por Assinatura';
+    sysSub='Economize sem instalar nada no telhado — perfeito pra imóvel alugado. Equivalente a um '+f.sistema.toLowerCase()+'.';
+  }
+  document.getElementById('r-sistema').textContent=sysNome;
+  document.getElementById('r-sistema-sub').textContent=sysSub;
+  document.getElementById('r-eco').textContent='R$ '+ecoCopa.toLocaleString('pt-BR');
+  document.getElementById('r-eco-ano').textContent='R$ '+ecoAno.toLocaleString('pt-BR');
+  Q.sistemaNome=sysNome;
+  showScreen('s-result');setProgress(99);
+  document.getElementById('progress').classList.remove('show');
+  applyPhoneMask(document.getElementById('tel'));
+  dataLayer.push({event:'quiz_resultado',conta:Q.conta,casa:Q.casa,cidade:Q.cidade,loja:Q.loja,economia_copa:ecoCopa});
+}
+
+// ---- ENVIO DO LEAD ----
+async function enviarLead(e){
+  e.preventDefault();
+  const nome=document.getElementById('nome').value.trim();
+  const tel=document.getElementById('tel').value.trim();
+  document.getElementById('tel-err').classList.remove('show');
+  if(!nome){document.getElementById('nome').focus();return;}
+  if(!validPhone(tel)){document.getElementById('tel-err').classList.add('show');return;}
+
+  const btn=document.getElementById('btn-lead');btn.disabled=true;
+  document.getElementById('btn-lead-txt').style.display='none';
+  document.getElementById('btn-lead-spin').style.display='inline-block';
+
+  const ip=await getIP();const utms=mergeUTMs();
+  const resumo=`Quiz Copa | Conta: R$${Q.conta==='900'?'900+':Q.conta}/mês | Casa própria: ${Q.casa} | Cidade: ${Q.cidade} | Loja: ${Q.lojaNome} | Sistema ideal: ${Q.sistemaNome} | Economia/Copa: R$ ${Q.ecoCopa.toLocaleString('pt-BR')}`;
+  const payload={
+    form_type:'quiz_solar', pagina:PAGINA,
+    nome, telefone:tel, cidade:Q.cidade,
+    conta_mensal:(Q.conta==='900'?'900+':Q.conta),
+    casa_propria:Q.casa, loja:Q.lojaNome,
+    sistema_ideal:Q.sistemaNome, economia_4anos:'R$ '+Q.ecoCopa.toLocaleString('pt-BR'),
+    mensagem:resumo, ip,
+    ...utms, timestamp:new Date().toISOString()
+  };
+  setCookie('rmq_lead',JSON.stringify(payload),30);
+  await sendWebhook(payload);
+  dataLayer.push({event:'lead_gerado',form_type:'quiz_solar',telefone:tel,loja:Q.loja,...utms});
+
+  // guarda resultado p/ a página de obrigado
+  try{localStorage.setItem('romasol_quiz',JSON.stringify({
+    nome, telefone:tel, cidade:Q.cidade, loja:Q.loja, lojaNome:Q.lojaNome, whats:Q.whats,
+    conta:Q.conta, casa:Q.casa, sistema:Q.sistemaNome,
+    ecoCopa:Q.ecoCopa, ecoAno:Q.ecoAno
+  }));}catch(e){}
+
+  // tela de sucesso -> redireciona
+  document.getElementById('suc-nome').textContent=nome.split(' ')[0]+'!';
+  showScreen('s-success');
+  setTimeout(()=>{ window.location.href=REDIRECT_OBRIGADO; },1700);
+}
+</script>
+</body>
+</html>
