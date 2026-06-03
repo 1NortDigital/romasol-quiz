@@ -60,8 +60,9 @@ body::after{content:'';position:fixed;top:50%;left:50%;width:200px;height:200px;
 .wrap{width:100%;max-width:620px;position:relative;z-index:2}
 
 /* BRAND */
-.brand{display:flex;justify-content:center;margin-bottom:18px}
-.brand img{height:46px;width:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+.brand{display:flex;justify-content:center;margin-bottom:20px}
+.brand img{height:78px;width:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+@media(max-width:520px){.brand img{height:60px}}
 
 /* PROGRESS */
 .progress{display:none;margin-bottom:16px}
@@ -86,7 +87,7 @@ body::after{content:'';position:fixed;top:50%;left:50%;width:200px;height:200px;
 @keyframes pulse{0%{box-shadow:0 0 0 0 var(--gold-glow)}70%{box-shadow:0 0 0 9px rgba(233,206,16,0)}100%{box-shadow:0 0 0 0 rgba(233,206,16,0)}}
 .trophy{font-size:62px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 16px rgba(233,206,16,.5))}
 h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(30px,7vw,50px);line-height:1.02;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px}
-h1 .hl{color:var(--gold)}
+h1 .hl{color:var(--gold);display:block;margin-top:4px}
 .intro-sub{font-size:16.5px;color:rgba(255,255,255,.86);margin-bottom:14px;font-weight:500}
 .intro-sub strong{color:var(--gold-light)}
 .intro-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin:18px 0 26px;text-align:left;max-width:380px;margin-left:auto;margin-right:auto}
@@ -189,12 +190,12 @@ select.city option{font-weight:500;color:var(--ink)}
     <section class="screen active intro-center" id="s-intro">
       <span class="cup-badge"><span class="pulse"></span>Copa da Economia · Energia Solar</span>
       <div class="trophy">🏆</div>
-      <h1>Descubra quanto você economiza <span class="hl">a cada Copa do Mundo</span></h1>
+      <h1>Descubra quanto você economiza<span class="hl">A cada Copa do Mundo</span></h1>
       <p class="intro-sub">Responda <strong>3 perguntas rápidas</strong> e veja quanto a energia solar coloca no seu bolso a cada <strong>4 anos</strong> — uma Copa inteira de economia.</p>
       <ul class="intro-feats">
         <li><span class="material-icons">timer</span> Leva menos de 1 minuto</li>
         <li><span class="material-icons">bolt</span> Resultado personalizado pro seu consumo</li>
-        <li><span class="material-icons">verified</span> Atende Uberlândia/MG, Catalão/GO e região</li>
+        <li><span class="material-icons">savings</span> Veja o sistema solar ideal pro seu perfil</li>
       </ul>
       <button class="btn btn-gold" onclick="goQuiz()">⚽ Iniciar o Quiz</button>
       <p class="disc">Romasol Energia Solar · 100% gratuito e sem compromisso</p>
@@ -314,11 +315,11 @@ select.city option{font-weight:500;color:var(--ink)}
 
       <div class="res-eco">
         <div class="lbl">Você economiza por Copa do Mundo</div>
-        <div class="big"><span id="r-eco" class="blur">R$ 00.000</span></div>
-        <div class="cup">⚽ a cada 4 anos · <span id="r-eco-ano" class="blur">R$ 0.000</span>/ano</div>
+        <div class="big"><span id="r-eco">R$ 00.000</span></div>
+        <div class="cup">⚽ a cada 4 anos · <span id="r-eco-ano">R$ 0.000</span>/ano</div>
       </div>
 
-      <p class="lock-note"><span class="material-icons" style="font-size:15px;vertical-align:-.2em">lock</span> Preencha abaixo pra <b>liberar seu resultado</b> e receber no WhatsApp 👇</p>
+      <p class="lock-note"><span class="material-icons" style="font-size:15px;vertical-align:-.2em">chat</span> Quer o <b>orçamento exato</b>? Preencha e receba no seu WhatsApp 👇</p>
 
       <form id="leadForm" onsubmit="enviarLead(event)" style="margin-top:18px">
         <div class="fg">
@@ -331,7 +332,7 @@ select.city option{font-weight:500;color:var(--ink)}
           <div class="err" id="tel-err">Informe um WhatsApp válido com DDD.</div>
         </div>
         <button type="submit" class="btn btn-gold" id="btn-lead">
-          <span id="btn-lead-txt">🏆 Liberar minha economia</span>
+          <span id="btn-lead-txt">🏆 Liberar resultado completo</span>
           <span class="spinner" id="btn-lead-spin"></span>
         </button>
         <p class="priv"><span class="material-icons">lock</span> Seus dados estão seguros. Sem spam.</p>
