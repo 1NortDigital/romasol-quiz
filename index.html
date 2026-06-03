@@ -86,11 +86,13 @@ body::after{content:'';position:fixed;top:50%;left:50%;width:200px;height:200px;
 .cup-badge .pulse{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 var(--gold-glow)}70%{box-shadow:0 0 0 9px rgba(233,206,16,0)}100%{box-shadow:0 0 0 0 rgba(233,206,16,0)}}
 .trophy{font-size:62px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 16px rgba(233,206,16,.5))}
-h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(30px,7vw,50px);line-height:1.02;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px}
+h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(25px,6vw,42px);line-height:1.04;letter-spacing:.4px;text-transform:uppercase;margin-bottom:16px}
 h1 .hl{color:var(--gold);display:block;margin-top:4px}
 .intro-sub{font-size:16.5px;color:rgba(255,255,255,.86);margin-bottom:14px;font-weight:500}
 .intro-sub strong{color:var(--gold-light)}
 .intro-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin:18px 0 26px;text-align:left;max-width:380px;margin-left:auto;margin-right:auto}
+.intro-feats-solo{justify-content:center}
+.intro-feats-solo li{justify-content:center}
 .intro-feats li{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:600;color:rgba(255,255,255,.9)}
 .intro-feats .material-icons{color:var(--gold);font-size:21px}
 .intro-center{text-align:center}
@@ -133,7 +135,10 @@ select.city option{font-weight:500;color:var(--ink)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;font-family:'Anton',sans-serif;font-weight:400;font-size:19px;letter-spacing:1px;text-transform:uppercase;padding:18px 26px;border-radius:var(--r-pill);border:none;cursor:pointer;transition:all var(--t);text-decoration:none}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--grass-deep);box-shadow:0 10px 30px var(--gold-glow)}
 .btn-gold:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(233,206,16,.6)}
-.btn-gold:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-gold:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;animation:none}
+.btn-pulse{animation:btnPulse 1.4s ease-in-out infinite}
+.btn-pulse:hover{animation-play-state:paused}
+@keyframes btnPulse{0%,100%{transform:scale(1);box-shadow:0 10px 30px var(--gold-glow)}50%{transform:scale(1.05);box-shadow:0 18px 48px rgba(233,206,16,.65)}}
 .btn-ghost{background:transparent;color:rgba(255,255,255,.7);border:none;font-family:'Montserrat';font-size:14px;font-weight:700;text-transform:none;letter-spacing:0;padding:12px;width:auto;cursor:pointer}
 .btn-ghost:hover{color:var(--gold-light)}
 .nav-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px}
@@ -176,8 +181,6 @@ select.city option{font-weight:500;color:var(--ink)}
 <body>
 <div class="wrap">
 
-  <div class="brand"><img src="assets/logo-romasol-horizontal.png" alt="Romasol Energia Solar"></div>
-
   <!-- PROGRESS -->
   <div class="progress" id="progress">
     <div class="progress-top"><span id="prog-label">Pergunta 1 de 3</span><span id="prog-pct">33%</span></div>
@@ -186,19 +189,18 @@ select.city option{font-weight:500;color:var(--ink)}
 
   <div class="card">
 
+    <div class="brand"><img src="assets/logo-romasol-horizontal.png" alt="Romasol Energia Solar"></div>
+
     <!-- ===== TELA 0 — INTRO ===== -->
     <section class="screen active intro-center" id="s-intro">
       <span class="cup-badge"><span class="pulse"></span>Copa da Economia · Energia Solar</span>
       <div class="trophy">🏆</div>
-      <h1>Descubra quanto você economiza<span class="hl">A cada Copa do Mundo</span></h1>
+      <h1>Descubra quanto pode economizar<span class="hl">A cada Copa do Mundo</span></h1>
       <p class="intro-sub">Responda <strong>3 perguntas rápidas</strong> e veja quanto a energia solar coloca no seu bolso a cada <strong>4 anos</strong> — uma Copa inteira de economia.</p>
-      <ul class="intro-feats">
+      <ul class="intro-feats intro-feats-solo">
         <li><span class="material-icons">timer</span> Leva menos de 1 minuto</li>
-        <li><span class="material-icons">bolt</span> Resultado personalizado pro seu consumo</li>
-        <li><span class="material-icons">savings</span> Veja o sistema solar ideal pro seu perfil</li>
       </ul>
-      <button class="btn btn-gold" onclick="goQuiz()">⚽ Iniciar o Quiz</button>
-      <p class="disc">Romasol Energia Solar · 100% gratuito e sem compromisso</p>
+      <button class="btn btn-gold btn-pulse" onclick="goQuiz()">⚽ Iniciar o Quiz</button>
     </section>
 
     <!-- ===== P1 — CONTA DE LUZ ===== -->
