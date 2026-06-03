@@ -57,12 +57,12 @@ body{
 body::before{content:'';position:fixed;top:50%;left:0;right:0;height:2px;background:var(--grass-line);z-index:0;pointer-events:none}
 body::after{content:'';position:fixed;top:50%;left:50%;width:200px;height:200px;border:2px solid var(--grass-line);border-radius:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none}
 
-.wrap{width:100%;max-width:620px;position:relative;z-index:2}
+.wrap{width:100%;max-width:620px;position:relative;z-index:2;margin:auto 0}
 
 /* BRAND */
-.brand{display:flex;justify-content:center;margin-bottom:20px}
-.brand img{height:78px;width:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
-@media(max-width:520px){.brand img{height:60px}}
+.brand{display:flex;justify-content:center;margin-bottom:18px}
+.brand img{height:100px;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+@media(max-width:520px){.brand img{height:78px}}
 
 /* PROGRESS */
 .progress{display:none;margin-bottom:16px}
